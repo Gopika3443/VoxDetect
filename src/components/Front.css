@@ -1,8 +1,8 @@
 .background{
-    background-color: rgb(163, 110, 40);
+    background-image:url('./logo192.png') ;
 }
 
-.h1{
+.heading{
     display: flex;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: larger;

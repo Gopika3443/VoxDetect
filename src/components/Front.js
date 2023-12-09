@@ -1,9 +1,12 @@
 import React from "react";
 import './Front.css';
+
 const Front=()=>{
     return(
         <div className="background">
-            <h1>VOXDETECT</h1>
+            <div className="heading">
+                <h1>VOXDETECT</h1>
+            </div>
         </div>
     );
 }
