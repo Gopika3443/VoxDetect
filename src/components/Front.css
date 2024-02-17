@@ -1,0 +1,10 @@
+.background{
+    background-image:url('./logo192.png') ;
+}
+
+.heading{
+    display: flex;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: larger;
+    color: brown;
+}
