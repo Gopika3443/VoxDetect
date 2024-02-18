@@ -1,24 +1,52 @@
-/* styles.css */
+/* AudioRecorder.css */
+
+.audio-recorder {
+  text-align: center;
+}
+
+.title {
+  font-size: 36px;
+  margin-top:0px ;
+  margin-bottom: 10px;
+  color: #ffffff;
+  background-color: blueviolet;
+}
+.caption {
+  font-size: 20px;
+  color: #242023;
+  margin-bottom: 20px;
+ 
+}
+
+
+.question {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.actions {
+  margin-top: 20px;
+}
 
 button {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  button:disabled {
-    background-color: #cccccc;
-    color: #666666;
-    cursor: not-allowed;
-  }
-  
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}

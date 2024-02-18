@@ -50,24 +50,27 @@ const AudioRecorder = ({ onRecordingComplete }) => {
       });
     }
   };
-  
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     setAudioFile(file);
   };
-  
 
   return (
-    <div>
-      <input type="file" accept="audio/*" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload Recording</button>
-      <button onClick={handleStartRecording} disabled={isRecording}>
-        Start Recording
-      </button>
-      <button onClick={handleStopRecording} disabled={!isRecording}>
-        Stop Recording
-      </button>
+    <div className="audio-recorder">
+      <h1 className="title">Welcome to Voxdetect!</h1>
+      <p className="caption">Unveiling Parkinson's Disease with Voice</p>
+      <p className="question">Want to know if you have Parkinson's disease?</p>
+      <div className="actions">
+        <input type="file" accept="audio/*" onChange={handleFileChange} />
+        <button onClick={handleUpload}>Upload Recording</button>
+        <button onClick={handleStartRecording} disabled={isRecording}>
+          Start Recording
+        </button>
+        <button onClick={handleStopRecording} disabled={!isRecording}>
+          Stop Recording
+        </button>
+      </div>
     </div>
   );
 };
