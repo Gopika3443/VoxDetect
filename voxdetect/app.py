@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import numpy as np
 import pandas as pd
 import librosa
@@ -8,7 +9,7 @@ import joblib
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 app = Flask(__name__)
-
+CORS(app)
 # Load SVM model
 model = joblib.load('newmodel.pkl')
 scaler = StandardScaler()

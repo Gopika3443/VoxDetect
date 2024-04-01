@@ -56,7 +56,8 @@ export default function Home() {
       setIsLoading(false);
       handleOpen();
       console.log("File uploaded successfully:", response.data);
-      if(response.data.prediction[0] === 0){
+      if(response.data && response.data.prediction && response.data.prediction[0] === 0) {
+
         setResult("The given audio don't have parkinson's disease");
       } else {
         setResult("The given audio has parkinson's disease");
