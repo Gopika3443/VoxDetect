@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkinson's Disease Detection</title>
+</head>
+<body>
+    <h1>Parkinson's Disease Detection</h1>
+    <form id="audioForm" method="post" enctype="multipart/form-data">
+        <label for="audioFile">Upload an audio file:</label><br>
+        <input type="file" id="audioFile" name="file"><br><br>
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("audioForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+
+            fetch("/predict", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById("result").innerHTML = "<p>Error: " + data.error + "</p>";
+                } else {
+                    var prediction = data.prediction[0];
+                    var resultText = prediction === 1 ? "Positive for Parkinson's Disease" : "Negative for Parkinson's Disease";
+                    document.getElementById("result").innerHTML = "<p>Prediction: " + resultText + "</p>";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("result").innerHTML = "<p>Error occurred while making prediction.</p>";
+            });
+        });
+    </script>
+</body>
+</html>
