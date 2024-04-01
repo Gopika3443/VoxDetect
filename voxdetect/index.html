@@ -1,44 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parkinson's Disease Detection</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parkinson's Disease Prediction</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    #upload {
+        display: none;
+    }
+    #upload-label {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    #upload-label:hover {
+        background-color: #0056b3;
+    }
+    #submit-btn {
+        margin-top: 20px;
+        padding: 10px 15px;
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    #submit-btn:hover {
+        background-color: #218838;
+    }
+</style>
 </head>
 <body>
-    <h1>Parkinson's Disease Detection</h1>
-    <form id="audioForm" method="post" enctype="multipart/form-data">
-        <label for="audioFile">Upload an audio file:</label><br>
-        <input type="file" id="audioFile" name="file"><br><br>
-        <button type="submit">Predict</button>
-    </form>
+<div class="container">
+    <h2>Parkinson's Disease Prediction</h2>
+    <input type="file" id="upload" accept=".wav">
+    <label for="upload" id="upload-label">Upload .wav File</label>
+    <button id="submit-btn">Submit</button>
+</div>
 
-    <div id="result"></div>
+<script>
+    document.getElementById('submit-btn').addEventListener('click', function() {
+        var fileInput = document.getElementById('upload');
+        var file = fileInput.files[0];
+        if (!file) {
+            alert('Please select a file.');
+            return;
+        }
+        if (file.type !== 'audio/wav') {
+            alert('Please select a .wav file.');
+            return;
+        }
 
-    <script>
-        document.getElementById("audioForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            var formData = new FormData(this);
+        // Create FormData object and append the file data
+        var formData = new FormData();
+        formData.append('file', file);
 
-            fetch("/predict", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    document.getElementById("result").innerHTML = "<p>Error: " + data.error + "</p>";
-                } else {
-                    var prediction = data.prediction[0];
-                    var resultText = prediction === 1 ? "Positive for Parkinson's Disease" : "Negative for Parkinson's Disease";
-                    document.getElementById("result").innerHTML = "<p>Prediction: " + resultText + "</p>";
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById("result").innerHTML = "<p>Error occurred while making prediction.</p>";
-            });
+        // Send the file to the backend using Fetch API
+        fetch('http://127.0.0.1:5500//upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle response from backend
+            console.log('Response from backend:', data);
+            // You can update the UI based on the prediction result here
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
-    </script>
+    });
+</script>
 </body>
 </html>
