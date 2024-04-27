@@ -13,7 +13,7 @@ from sklearn.feature_selection import SelectKBest, f_classif
 app = Flask(__name__)
 CORS(app)
 # Load SVM model
-model = joblib.load('rbfmodel.pkl')
+model = joblib.load('rbfmodel8.pkl')
 scaler = StandardScaler()
 
 
@@ -30,7 +30,7 @@ x_train = scaler.transform(x_train)
 x_val = scaler.transform(x_val)
 x_test = scaler.transform(x_test)
 
-selector = SelectKBest(score_func=f_classif)
+selector = SelectKBest(score_func=f_classif, k=8)
 x_train_selected = selector.fit_transform(x_train, y_train)
 x_val_selected = selector.transform(x_val)
 
@@ -184,13 +184,15 @@ def predict():
             # getting error X has 1 features, but StandardScaler is expecting 22 features as input. how to fix?
 
 
-            ip_data_np = np.asarray(features_df)
+            # ip_data_np = np.asarray(features_df)
     
-            s_data = scaler.transform(ip_data_np.reshape(1, -1))
+            # s_data = scaler.transform(ip_data_np.reshape(1, -1))
 
             if features_df is not None:
+                selected_features = features_df.loc[:, selector.get_support()]
+
                 # Make prediction using SVM model
-                prediction = model.predict(s_data)
+                prediction = model.predict(selected_features)
                 return jsonify({'prediction': prediction.tolist()})
             else:
                 return jsonify({'error': 'Failed to extract features from audio'})
