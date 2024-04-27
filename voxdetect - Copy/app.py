@@ -6,12 +6,14 @@ import librosa
 import crepe
 import nolds
 import joblib
+from sklearn import svm
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.feature_selection import SelectKBest, f_classif
 app = Flask(__name__)
 CORS(app)
 # Load SVM model
-model = joblib.load('modelnew12.pkl')
+model = joblib.load('rbfmodel.pkl')
 scaler = StandardScaler()
 
 
@@ -19,11 +21,28 @@ scaler = StandardScaler()
 df1 = pd.read_csv('shuffled dataset.csv')
 x=df1.drop(columns=["Name","status"],axis=1)
 y=df1["status"]
-x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=2)
+x_train, x_temp, y_train, y_temp = train_test_split(x, y, test_size=0.3, random_state=42)
+x_val, x_test, y_val, y_test = train_test_split(x_temp, y_temp, test_size=0.5, random_state=42)
 
 scaler.fit(x_train)
 
+x_train = scaler.transform(x_train)
+x_val = scaler.transform(x_val)
+x_test = scaler.transform(x_test)
 
+selector = SelectKBest(score_func=f_classif)
+x_train_selected = selector.fit_transform(x_train, y_train)
+x_val_selected = selector.transform(x_val)
+
+param_grid_rbf = {'C': [0.001, 0.01, 0.1, 1, 10, 100], 'gamma': [0.001, 0.01, 0.1, 1, 10, 100]}
+svm_classifier_rbf = svm.SVC(kernel='rbf')
+grid_search_rbf = GridSearchCV(estimator=svm_classifier_rbf, param_grid=param_grid_rbf, cv=5)
+grid_search_rbf.fit(x_train_selected, y_train)
+best_C_rbf = grid_search_rbf.best_params_['C']
+best_gamma_rbf = grid_search_rbf.best_params_['gamma']
+
+best_model_rbf = svm.SVC(kernel='rbf', C=best_C_rbf, gamma=best_gamma_rbf)
+best_model_rbf.fit(x_train_selected, y_train)
 
 
 # Function to calculate jitter
